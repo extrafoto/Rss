@@ -99,7 +99,7 @@ body {
 
 .navigation {
   position: absolute;
-  bottom: 30px; /* Eleva um pouco mais para ficar bem visível */
+  bottom: 50px; /* Eleva um pouco mais para ficar bem visível */
   left: 0;
   right: 0;
   display: flex;
