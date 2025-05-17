@@ -1,3 +1,4 @@
+
 body {
   margin: 0;
   padding: 0;
@@ -63,7 +64,8 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: center; /* já está correto no seu código atual */
+  text-align: center;  /* garante centralização total dos textos */
 }
 
 .story.active {
@@ -84,39 +86,27 @@ body {
 }
 
 .read-more-btn {
+  display: inline-block;
   padding: 10px 20px;
   background: white;
   color: #003366;
   text-decoration: none;
   border-radius: 20px;
   font-weight: bold;
-  display: inline-block;
-  margin-bottom: 10px;
   text-align: center;
-}
-
-.share-icons {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-}
-
-.share-icons a {
-  font-size: 1.2rem;
-  color: white;
-  text-decoration: none;
-  opacity: 0.8;
+  margin-top: 20px;
 }
 
 .navigation {
   position: absolute;
-  bottom: 20px;
+  bottom: 30px; /* Eleva um pouco mais para ficar bem visível */
   left: 0;
   right: 0;
   display: flex;
   justify-content: space-between;
-  padding: 0 15px;
+  padding: 0 25px;
   z-index: 1000;
+  pointer-events: none; /* garante clique somente nos botões internos */
 }
 
 .control-button {
@@ -125,10 +115,11 @@ body {
   font-size: 2.5rem;
   user-select: none;
   transition: transform 0.2s;
+  pointer-events: auto; /* reativa eventos de clique apenas no botão */
 }
 
 .control-button:hover {
-  transform: scale(1.1);
+  transform: scale(1.2);
 }
 
 .logo {
