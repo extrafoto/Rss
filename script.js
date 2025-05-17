@@ -65,6 +65,13 @@ storyElement.querySelector('.facebook').href = `https://www.facebook.com/sharer/
             progressBar.innerHTML = '<div class="progress-bar-fill"></div>';
             progressContainer.appendChild(progressBar);
             progressBars.push(progressBar.querySelector('.progress-bar-fill'));
+
+            const encodedLink = encodeURIComponent(story.link);
+storyElement.querySelector('.whatsapp').href = `https://wa.me/?text=${encodedLink}`;
+storyElement.querySelector('.twitter').href = `https://twitter.com/intent/tweet?url=${encodedLink}`;
+storyElement.querySelector('.bluesky').href = `https://bsky.app/intent/compose?text=${encodedLink}`;
+storyElement.querySelector('.facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodedLink}`;
+
         });
 
         stories.forEach(story => {
