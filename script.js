@@ -11,13 +11,16 @@ document.addEventListener('DOMContentLoaded', function() {
     let isTransitioning = false;
 
     // Elementos DOM
-    const storiesContent = document.querySelector('.stories-content');
-    const progressContainer = document.querySelector('.progress-container');
-    const prevButton = document.getElementById('prev-button');
-    const nextButton = document.getElementById('next-button');
-    const navLeft = document.querySelector('.nav-left');
-    const navRight = document.querySelector('.nav-right');
-    const loadingOverlay = document.querySelector('.loading-overlay');
+   const prevButton = document.getElementById('prev-button');
+const nextButton = document.getElementById('next-button');
+
+prevButton.addEventListener('click', () => {
+    showStory(currentIndex - 1);
+});
+
+nextButton.addEventListener('click', () => {
+    showStory(currentIndex + 1);
+});
 
     // Inicializar o parser RSS
     const rssParser = new RSSParser();
