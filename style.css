@@ -91,6 +91,9 @@ body {
   text-decoration: none;
   border-radius: 20px;
   font-weight: bold;
+  display: inline-block;
+  margin: 0 auto; /* Centraliza horizontalmente */
+  text-align: center;
 }
 
 .navigation {
