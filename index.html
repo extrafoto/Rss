@@ -1,30 +1,32 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Painel de Notícias</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script src="rss-parser.js"></script>
 </head>
 <body>
   <div class="container">
     <div class="stories-container">
-      <div class="logo">
-        <img src="https://i.ibb.co/ksq2pm0C/logo.png" alt="Logo" width="50" />
-      </div>
       <div class="progress-container"></div>
+
       <div class="stories-content"></div>
+
       <div class="navigation">
-        <div class="control-button" id="prev-button">&#8249;</div>
-        <div class="control-button" id="next-button">&#8250;</div>
+        <div id="prev-button" class="control-button">◀</div>
+        <div id="next-button" class="control-button">▶</div>
       </div>
-      <div class="loading-overlay hidden">
-        <span>Carregando...</span>
+
+      <div class="logo">
+        <img src="https://i.ibb.co/ksq2pm0C/logo.png" alt="Logo" width="40" />
       </div>
+
+      <div class="loading-overlay hidden">Carregando...</div>
     </div>
   </div>
-  <script src="https://cdn.jsdelivr.net/gh/rbren/rss-parser@master/dist/rss-parser.min.js"></script>
+
   <script src="script.js"></script>
 </body>
 </html>
