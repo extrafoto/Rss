@@ -42,6 +42,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="story-title">Erro ao carregar as notícias</div>
                     <div class="story-date">${error.message}</div>
                 </div>`;
+            const encodedLink = encodeURIComponent(story.link);
+storyElement.querySelector('.whatsapp').href = `https://wa.me/?text=${encodedLink}`;
+storyElement.querySelector('.twitter').href = `https://twitter.com/intent/tweet?url=${encodedLink}`;
+storyElement.querySelector('.bluesky').href = `https://bsky.app/intent/compose?text=${encodedLink}`;
+storyElement.querySelector('.facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${encodedLink}`;
+
         }
     }
 
