@@ -64,7 +64,8 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: center; /* já está correto no seu código atual */
+  text-align: center;  /* garante centralização total dos textos */
 }
 
 .story.active {
