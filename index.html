@@ -1,32 +1,35 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Painel de Notícias</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Notícias O Globo</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="rss-parser.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
   <div class="container">
     <div class="stories-container">
       <div class="progress-container"></div>
-
       <div class="stories-content"></div>
-
       <div class="navigation">
-        <div id="prev-button" class="control-button">◀</div>
-        <div id="next-button" class="control-button">▶</div>
+        <div class="control-button" id="prev-button">
+          <i class="fas fa-chevron-left"></i>
+        </div>
+        <div class="control-button" id="next-button">
+          <i class="fas fa-chevron-right"></i>
+        </div>
       </div>
-
-      <div class="logo">
-        <img src="https://i.ibb.co/ksq2pm0C/logo.png" alt="Logo" width="40" />
+    <div class="logo">
+  <img src="https://i.ibb.co/ksq2pm0C/logo-globo.png" alt="O Globo" style="height:36px;">
+</div>
+      <div class="loading-overlay hidden">
+        <span>Carregando notícias...</span>
       </div>
-
-      <div class="loading-overlay hidden">Carregando...</div>
     </div>
   </div>
-
+  <script src="js/rss-parser.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
