@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const rssParser = new RSSParser();
     
     // Tempo de exibição de cada notícia (aumentado para melhor leitura)
-    let storyDuration = 8000; // 8 segundos por notícia
 
     // Carregar as notícias diretamente do feed RSS
     async function loadStories() {
