@@ -50,13 +50,9 @@ function exibirNoticia() {
     if (barras[indexAtual]) barras[indexAtual].classList.add('animando');
   }, 50);
 
-  // Cria o card
+  // Cria o card (sem imagem nem descrição)
   const card = document.createElement('div');
   card.className = 'card';
-
-  const imagem = document.createElement('img');
-  imagem.src = noticia.imagem;
-  imagem.alt = noticia.titulo;
 
   const titulo = document.createElement('h2');
   titulo.textContent = noticia.titulo;
@@ -72,7 +68,6 @@ function exibirNoticia() {
   link.className = 'ler-mais';
   link.textContent = 'Ler mais';
 
-  card.appendChild(imagem);
   card.appendChild(titulo);
   card.appendChild(data);
   card.appendChild(link);
