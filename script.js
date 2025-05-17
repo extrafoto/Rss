@@ -1,91 +1,146 @@
-document.addEventListener('DOMContentLoaded', () => {
-  let currentIndex = 0;
-  let stories = [];
-  let autoPlayTimer;
-  let storyDuration = 7000;
-  let progressBars = [];
+document.addEventListener('DOMContentLoaded', function() {
+    // Variáveis globais
+    let currentIndex = 0;
+    let stories = [];
+    let autoPlayTimer;
+    let storyDuration = 7000; // 7 segundos por notícia
+    let touchStartX = 0;
+    let touchEndX = 0;
+    let progressBars = [];
+    let isTransitioning = false;
 
-  const storiesContent = document.querySelector('.stories-content');
-  const progressContainer = document.querySelector('.progress-container');
-  const loadingOverlay = document.querySelector('.loading-overlay');
-  const prevButton = document.getElementById('prev-button');
-  const nextButton = document.getElementById('next-button');
+    // Elementos DOM corrigidos
+    const progressContainer = document.querySelector('.progress-container');
+    const storiesContent = document.querySelector('.stories-content');
+    const loadingOverlay = document.querySelector('.loading-overlay');
+    const prevButton = document.getElementById('prev-button');
+    const nextButton = document.getElementById('next-button');
 
-  const rssParser = new RSSParser();
+    // Inicializar o parser RSS
+    const rssParser = new RSSParser();
 
-  async function loadStories() {
-    try {
-      loadingOverlay.classList.remove('hidden');
-      stories = await rssParser.fetchAndParseFeed();
-      initializeStories();
-      setTimeout(() => loadingOverlay.classList.add('hidden'), 300);
-    } catch (error) {
-      console.error('Erro ao carregar as notícias:', error);
-      storiesContent.innerHTML = `<div class="story"><div class="story-title">Erro</div></div>`;
-      loadingOverlay.classList.add('hidden');
+    prevButton.addEventListener('click', () => {
+        showStory(currentIndex - 1);
+    });
+
+    nextButton.addEventListener('click', () => {
+        showStory(currentIndex + 1);
+    });
+
+    // Carregar as notícias diretamente do feed RSS
+    async function loadStories() {
+        try {
+            loadingOverlay.classList.remove('hidden');
+            stories = await rssParser.fetchAndParseFeed();
+            initializeStories();
+            setTimeout(() => loadingOverlay.classList.add('hidden'), 500);
+        } catch (error) {
+            console.error('Erro ao carregar as notícias:', error);
+            loadingOverlay.classList.add('hidden');
+            storiesContent.innerHTML = `
+                <div class="story">
+                    <div class="story-title">Erro ao carregar as notícias</div>
+                    <div class="story-date">${error.message}</div>
+                </div>`;
+        }
     }
-  }
 
-  function initializeStories() {
-    if (!stories.length) return;
+    // Inicializar as histórias corretamente
+    function initializeStories() {
+        if (!stories.length) return;
 
-    storiesContent.innerHTML = '';
-    progressContainer.innerHTML = '';
-    progressBars = [];
+        progressContainer.innerHTML = '';
+        storiesContent.innerHTML = '';
+        progressBars = [];
 
-    stories.forEach((_, index) => {
-      const bar = document.createElement('div');
-      bar.className = 'progress-bar';
-      bar.innerHTML = '<div class="progress-bar-fill"></div>';
-      progressContainer.appendChild(bar);
-      progressBars.push(bar.querySelector('.progress-bar-fill'));
+        stories.forEach(() => {
+            const progressBar = document.createElement('div');
+            progressBar.className = 'progress-bar';
+            progressBar.innerHTML = '<div class="progress-bar-fill"></div>';
+            progressContainer.appendChild(progressBar);
+            progressBars.push(progressBar.querySelector('.progress-bar-fill'));
+        });
+
+        stories.forEach(story => {
+            const storyElement = document.createElement('div');
+            storyElement.className = 'story';
+            storyElement.innerHTML = `
+                <div class="story-content">
+                    <div class="story-title">${story.titulo}</div>
+                    <div class="story-date">${story.data}</div>
+                    <a href="${story.link}" class="read-more-btn" target="_blank" rel="noopener noreferrer">Ler mais</a>
+                </div>`;
+            storiesContent.appendChild(storyElement);
+        });
+
+        showStory(0);
+    }
+
+    function showStory(index) {
+        if (isTransitioning) return;
+        isTransitioning = true;
+
+        currentIndex = Math.max(0, Math.min(index, stories.length - 1));
+        storiesContent.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+        document.querySelectorAll('.story').forEach((story, i) => {
+            story.classList.toggle('active', i === currentIndex);
+        });
+
+        progressBars.forEach((fill, i) => {
+            fill.style.transition = 'none';
+            fill.style.width = i < currentIndex ? '100%' : '0';
+        });
+
+        clearTimeout(autoPlayTimer);
+        setTimeout(() => startProgressBar(currentIndex), 50);
+        setTimeout(() => (isTransitioning = false), 300);
+    }
+
+    function startProgressBar(index) {
+        if (index >= progressBars.length) return;
+        const fill = progressBars[index];
+        if (!fill) return;
+        fill.style.transition = `width ${storyDuration}ms linear`;
+        fill.style.width = '100%';
+
+        autoPlayTimer = setTimeout(() => {
+            showStory((currentIndex + 1) % stories.length);
+        }, storyDuration);
+    }
+
+    // Eventos touch
+    document.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+        clearTimeout(autoPlayTimer);
     });
 
-    stories.forEach(story => {
-      const el = document.createElement('div');
-      el.className = 'story';
-      el.innerHTML = `
-        <div class="story-content">
-          <div class="story-title">${story.titulo}</div>
-          <div class="story-date">${story.data}</div>
-          <a href="${story.link}" class="read-more-btn" target="_blank">Ler mais</a>
-          <div class="share-icons">
-            <a href="https://api.whatsapp.com/send?text=${encodeURIComponent(story.titulo + ' ' + story.link)}" target="_blank">🟢</a>
-            <a href="https://x.com/intent/tweet?text=${encodeURIComponent(story.titulo)}&url=${encodeURIComponent(story.link)}" target="_blank">❌</a>
-            <a href="https://bsky.app/profile?text=${encodeURIComponent(story.titulo)} ${encodeURIComponent(story.link)}" target="_blank">🔵</a>
-            <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(story.link)}" target="_blank">📘</a>
-          </div>
-        </div>
-      `;
-      storiesContent.appendChild(el);
+    document.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
     });
 
-    showStory(0);
-  }
+    function handleSwipe() {
+        const distance = touchEndX - touchStartX;
+        if (distance < -50) showStory(currentIndex + 1);
+        else if (distance > 50) showStory(currentIndex - 1);
+    }
 
-  function showStory(index) {
-    if (index < 0) index = 0;
-    if (index >= stories.length) index = stories.length - 1;
-    currentIndex = index;
-
-    storiesContent.style.transform = `translateX(-${index * 100}%)`;
-    progressBars.forEach((fill, i) => {
-      fill.style.transition = 'none';
-      fill.style.width = i < index ? '100%' : '0%';
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) clearTimeout(autoPlayTimer);
+        else startProgressBar(currentIndex);
     });
 
-    void progressBars[index].offsetWidth;
-    progressBars[index].style.transition = `width ${storyDuration}ms linear`;
-    progressBars[index].style.width = '100%';
+    // Botão atualizar
+    function addRefreshButton() {
+        const refreshButton = document.createElement('div');
+        refreshButton.className = 'refresh-button';
+        refreshButton.innerHTML = '<i class="fas fa-sync-alt"></i>';
+        document.querySelector('.stories-container').appendChild(refreshButton);
 
-    clearTimeout(autoPlayTimer);
-    autoPlayTimer = setTimeout(() => {
-      showStory((index + 1) % stories.length);
-    }, storyDuration);
-  }
+        refreshButton.addEventListener('click', loadStories);
+    }
 
-  prevButton.addEventListener('click', () => showStory(currentIndex - 1));
-  nextButton.addEventListener('click', () => showStory(currentIndex + 1));
-
-  loadStories();
+    loadStories();
+    addRefreshButton();
 });
