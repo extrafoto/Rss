@@ -101,20 +101,20 @@ body {
   bottom: 20px;
   left: 0;
   right: 0;
-  width: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 0 20px;
-  z-index: 1000;
+  padding: 0 15px;
+  z-index: 1000; /* sempre acima dos outros elementos */
 }
 
 .control-button {
   cursor: pointer;
   color: white;
-  font-size: 2rem;
+  font-size: 2.5rem;
   user-select: none;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s;
 }
+
 
 .control-button:hover {
   transform: scale(1.1);
