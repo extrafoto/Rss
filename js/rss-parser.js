@@ -20,19 +20,10 @@ class RSSParser {
             console.log('Feed recebido, itens:', items.length);
 
             return items.map(item => {
-                const rawHtml = item.content || item.description || item.descricao || '';
-                const imagemExtraida = this.extractImageFromContent(rawHtml);
-
-                const imagemFinal = imagemExtraida || 'https://via.placeholder.com/400x240?text=Sem+Imagem';
-
-                console.log('Imagem detectada:', imagemFinal); // log para debug
-
                 return {
-                    titulo: item.title || item.titulo,
+                    titulo: item.title || 'Sem título',
                     link: item.link,
-                    data: this.formatDate(item.pubDate || item.data),
-                    descricao: item.contentSnippet || item.descricao || '',
-                    imagem: imagemFinal
+                    data: this.formatDate(item.pubDate || item.data)
                 };
             });
 
@@ -40,20 +31,6 @@ class RSSParser {
             console.error('Erro ao buscar ou processar o feed RSS:', error);
             throw error;
         }
-    }
-
-    /**
-     * Extrai a URL da imagem de um conteúdo HTML
-     */
-    extractImageFromContent(html) {
-        if (!html) return null;
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = html;
-        const img = tempDiv.querySelector('img');
-        if (img && img.src && img.src.startsWith('http')) {
-            return img.src;
-        }
-        return null;
     }
 
     /**
