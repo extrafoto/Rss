@@ -85,15 +85,15 @@ body {
 }
 
 .read-more-btn {
+  display: inline-block;
   padding: 10px 20px;
   background: white;
   color: #003366;
   text-decoration: none;
   border-radius: 20px;
   font-weight: bold;
-  display: inline-block;
-  margin: 0 auto; /* Centraliza horizontalmente */
   text-align: center;
+  margin-top: 20px;
 }
 
 .navigation {
