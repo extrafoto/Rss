@@ -16,30 +16,24 @@ class RSSParser {
      */
     async fetchAndParseFeed() {
         try {
-            // Busca o feed RSS através do proxy CORS
             console.log('Buscando feed RSS de:', this.feedUrl);
-            console.log('Usando proxy:', this.corsProxy);
-            
             const response = await fetch(this.corsProxy + encodeURIComponent(this.feedUrl));
-            
+
             if (!response.ok) {
                 throw new Error(`Erro HTTP: ${response.status} ${response.statusText}`);
             }
-            
+
             const xmlText = await response.text();
             console.log('XML recebido, tamanho:', xmlText.length);
-            
-            // Converte o XML para um objeto DOM
+
             const parser = new DOMParser();
             const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
-            
-            // Verifica se o parsing foi bem sucedido
+
             const parseError = xmlDoc.querySelector('parsererror');
             if (parseError) {
                 throw new Error('Erro ao analisar XML: ' + parseError.textContent);
             }
-            
-            // Processa os itens do feed
+
             return this.processItems(xmlDoc);
         } catch (error) {
             console.error('Erro ao buscar ou processar o feed RSS:', error);
@@ -57,20 +51,16 @@ class RSSParser {
         const processedItems = [];
 
         items.forEach(item => {
-            // Extrai os dados básicos do item
             const title = this.getElementText(item, 'title');
             const link = this.getElementText(item, 'link');
             const pubDate = this.getElementText(item, 'pubDate');
             const description = this.getElementText(item, 'description');
-            
-            // Extrai a imagem da descrição ou usa uma imagem padrão
-            const imageUrl = this.extractImageFromDescription(description) || 
-                             'https://s2.glbimg.com/7Jk2Dl-QwrJT-8YUjMH9-9Ks5vw=/0x0:180x180/180x180/s.glbimg.com/jo/g1/f/original/2015/05/14/o-globo-180x180.png';
-            
-            // Formata a data
+
+            const imageUrl = this.extractImageFromDescription(description) ||
+                'https://s2.glbimg.com/7Jk2Dl-QwrJT-8YUjMH9-9Ks5vw=/0x0:180x180/180x180/s.glbimg.com/jo/g1/f/original/2015/05/14/o-globo-180x180.png';
+
             const formattedDate = this.formatDate(pubDate);
-            
-            // Adiciona o item processado ao array
+
             processedItems.push({
                 titulo: title,
                 link: link,
@@ -91,7 +81,7 @@ class RSSParser {
      */
     getElementText(parent, tagName) {
         const element = parent.querySelector(tagName);
-        return element ? element.textContent : '';
+        return element ? element.textContent.trim() : '';
     }
 
     /**
@@ -101,12 +91,8 @@ class RSSParser {
      */
     extractImageFromDescription(description) {
         if (!description) return null;
-        
-        // Cria um elemento temporário para analisar o HTML
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = description;
-        
-        // Busca a primeira imagem
         const img = tempDiv.querySelector('img');
         return img ? img.src : null;
     }
