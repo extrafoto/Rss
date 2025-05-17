@@ -1,40 +1,37 @@
 /**
- * Função para processar o feed RSS e converter para JSON
- * Usa um proxy CORS para contornar restrições de segurança
+ * Classe para processar o feed RSS a partir da função serverless
  */
 class RSSParser {
     constructor() {
-        // URL do feed RSS do O Globo
-        this.feedUrl = 'https://oglobo.globo.com/rss/oglobo';
-        // Proxy CORS para contornar restrições de segurança
-        this.corsProxy = 'https://api.codetabs.com/v1/proxy?quest=';
+        // Endereço da função Netlify que fornece o feed já em JSON
+        this.apiEndpoint = '/.netlify/functions/fetchRSS';
     }
 
     /**
-     * Busca e processa o feed RSS
-     * @returns {Promise} Promise com os dados do feed em formato JSON
+     * Busca e processa os dados já em JSON retornados pelo backend
+     * @returns {Promise<Array>} Array de notícias
      */
     async fetchAndParseFeed() {
         try {
-            console.log('Buscando feed RSS de:', this.feedUrl);
-            const response = await fetch(this.corsProxy + encodeURIComponent(this.feedUrl));
+            console.log('Buscando feed RSS via função serverless:', this.apiEndpoint);
+            const response = await fetch(this.apiEndpoint);
 
             if (!response.ok) {
                 throw new Error(`Erro HTTP: ${response.status} ${response.statusText}`);
             }
 
-            const xmlText = await response.text();
-            console.log('XML recebido, tamanho:', xmlText.length);
+            const items = await response.json();
+            console.log('Feed recebido, itens:', items.length);
 
-            const parser = new DOMParser();
-            const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
-
-            const parseError = xmlDoc.querySelector('parsererror');
-            if (parseError) {
-                throw new Error('Erro ao analisar XML: ' + parseError.textContent);
-            }
-
-            return this.processItems(xmlDoc);
+            // Adiciona tratamento para imagem e data no client se necessário
+            return items.map(item => ({
+                titulo: item.title || item.titulo,
+                link: item.link,
+                data: this.formatDate(item.pubDate || item.data),
+                descricao: item.contentSnippet || item.descricao || '',
+                imagem: this.extractImageFromContent(item.content || item.descricao) ||
+                    'https://s2.glbimg.com/7Jk2Dl-QwrJT-8YUjMH9-9Ks5vw=/0x0:180x180/180x180/s.glbimg.com/jo/g1/f/original/2015/05/14/o-globo-180x180.png'
+            }));
         } catch (error) {
             console.error('Erro ao buscar ou processar o feed RSS:', error);
             throw error;
@@ -42,64 +39,21 @@ class RSSParser {
     }
 
     /**
-     * Processa os itens do feed RSS
-     * @param {Document} xmlDoc - Documento XML do feed
-     * @returns {Array} Array de objetos com os dados dos itens
+     * Extrai a URL da imagem do conteúdo HTML
+     * @param {string} html - HTML da descrição
+     * @returns {string|null}
      */
-    processItems(xmlDoc) {
-        const items = xmlDoc.querySelectorAll('item');
-        const processedItems = [];
-
-        items.forEach(item => {
-            const title = this.getElementText(item, 'title');
-            const link = this.getElementText(item, 'link');
-            const pubDate = this.getElementText(item, 'pubDate');
-            const description = this.getElementText(item, 'description');
-
-            const imageUrl = this.extractImageFromDescription(description) ||
-                'https://s2.glbimg.com/7Jk2Dl-QwrJT-8YUjMH9-9Ks5vw=/0x0:180x180/180x180/s.glbimg.com/jo/g1/f/original/2015/05/14/o-globo-180x180.png';
-
-            const formattedDate = this.formatDate(pubDate);
-
-            processedItems.push({
-                titulo: title,
-                link: link,
-                data: formattedDate,
-                descricao: description,
-                imagem: imageUrl
-            });
-        });
-
-        return processedItems;
-    }
-
-    /**
-     * Extrai o texto de um elemento XML
-     * @param {Element} parent - Elemento pai
-     * @param {string} tagName - Nome da tag
-     * @returns {string} Texto do elemento ou string vazia
-     */
-    getElementText(parent, tagName) {
-        const element = parent.querySelector(tagName);
-        return element ? element.textContent.trim() : '';
-    }
-
-    /**
-     * Extrai a URL da imagem da descrição HTML
-     * @param {string} description - Descrição HTML
-     * @returns {string|null} URL da imagem ou null
-     */
-    extractImageFromDescription(description) {
-        if (!description) return null;
+    extractImageFromContent(html) {
+        if (!html) return null;
         const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = description;
+        tempDiv.innerHTML = html;
         const img = tempDiv.querySelector('img');
         return img ? img.src : null;
     }
 
     /**
-     * Formata a data do feed RSS
-     * @param {string} dateStr - String de data no formato RSS
+     * Formata a data para o padrão brasileiro
+     * @param {string} dateStr - Data no formato RSS
      * @returns {string} Data formatada
      */
     formatDate(dateStr) {
