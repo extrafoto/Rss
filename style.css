@@ -6,6 +6,7 @@ body {
   color: white;
   overflow: hidden;
 }
+
 .container {
   height: 100vh;
   width: 100vw;
@@ -13,6 +14,7 @@ body {
   justify-content: center;
   align-items: center;
 }
+
 .stories-container {
   position: relative;
   width: 100%;
@@ -21,6 +23,7 @@ body {
   background: #003366;
   overflow: hidden;
 }
+
 .progress-container {
   display: flex;
   gap: 4px;
@@ -30,6 +33,7 @@ body {
   right: 10px;
   z-index: 10;
 }
+
 .progress-bar {
   flex: 1;
   height: 4px;
@@ -37,17 +41,20 @@ body {
   border-radius: 2px;
   overflow: hidden;
 }
+
 .progress-bar-fill {
   height: 100%;
   background: white;
   width: 0;
 }
+
 .stories-content {
   display: flex;
   transition: transform 0.3s ease-in-out;
   width: 100%;
   height: 100%;
 }
+
 .story {
   flex: 0 0 100%;
   padding: 20px;
@@ -58,20 +65,24 @@ body {
   justify-content: center;
   align-items: center;
 }
+
 .story.active {
   pointer-events: auto;
 }
+
 .story-title {
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 10px;
   text-align: center;
 }
+
 .story-date {
   font-size: 0.9rem;
   margin-bottom: 20px;
   opacity: 0.8;
 }
+
 .read-more-btn {
   padding: 10px 20px;
   background: white;
@@ -81,16 +92,22 @@ body {
   font-weight: bold;
   display: inline-block;
   margin-bottom: 10px;
+  text-align: center;
 }
+
 .share-icons {
   display: flex;
   justify-content: center;
   gap: 12px;
 }
+
 .share-icons a {
-  color: white;
   font-size: 1.2rem;
+  color: white;
+  text-decoration: none;
+  opacity: 0.8;
 }
+
 .navigation {
   position: absolute;
   bottom: 20px;
@@ -101,6 +118,7 @@ body {
   padding: 0 15px;
   z-index: 1000;
 }
+
 .control-button {
   cursor: pointer;
   color: white;
@@ -108,14 +126,17 @@ body {
   user-select: none;
   transition: transform 0.2s;
 }
+
 .control-button:hover {
   transform: scale(1.1);
 }
+
 .logo {
   position: absolute;
   top: 10px;
   right: 10px;
 }
+
 .loading-overlay {
   position: absolute;
   inset: 0;
@@ -125,6 +146,7 @@ body {
   align-items: center;
   z-index: 20;
 }
+
 .loading-overlay.hidden {
   display: none;
 }
