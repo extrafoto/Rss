@@ -1,15 +1,11 @@
-/**
- * Classe para processar o feed RSS a partir da função serverless
- */
 class RSSParser {
     constructor() {
-        // Endereço da função Netlify que fornece o feed já em JSON
+        // Endpoint da função serverless
         this.apiEndpoint = '/.netlify/functions/fetchRSS';
     }
 
     /**
-     * Busca e processa os dados já em JSON retornados pelo backend
-     * @returns {Promise<Array>} Array de notícias
+     * Busca e processa os dados do feed já em JSON
      */
     async fetchAndParseFeed() {
         try {
@@ -23,15 +19,23 @@ class RSSParser {
             const items = await response.json();
             console.log('Feed recebido, itens:', items.length);
 
-            // Adiciona tratamento para imagem e data no client se necessário
-            return items.map(item => ({
-                titulo: item.title || item.titulo,
-                link: item.link,
-                data: this.formatDate(item.pubDate || item.data),
-                descricao: item.contentSnippet || item.descricao || '',
-                imagem: this.extractImageFromContent(item.content || item.descricao) ||
-                    'https://s2.glbimg.com/7Jk2Dl-QwrJT-8YUjMH9-9Ks5vw=/0x0:180x180/180x180/s.glbimg.com/jo/g1/f/original/2015/05/14/o-globo-180x180.png'
-            }));
+            return items.map(item => {
+                const rawHtml = item.content || item.description || item.descricao || '';
+                const imagemExtraida = this.extractImageFromContent(rawHtml);
+
+                const imagemFinal = imagemExtraida || 'https://via.placeholder.com/400x240?text=Sem+Imagem';
+
+                console.log('Imagem detectada:', imagemFinal); // log para debug
+
+                return {
+                    titulo: item.title || item.titulo,
+                    link: item.link,
+                    data: this.formatDate(item.pubDate || item.data),
+                    descricao: item.contentSnippet || item.descricao || '',
+                    imagem: imagemFinal
+                };
+            });
+
         } catch (error) {
             console.error('Erro ao buscar ou processar o feed RSS:', error);
             throw error;
@@ -39,22 +43,21 @@ class RSSParser {
     }
 
     /**
-     * Extrai a URL da imagem do conteúdo HTML
-     * @param {string} html - HTML da descrição
-     * @returns {string|null}
+     * Extrai a URL da imagem de um conteúdo HTML
      */
     extractImageFromContent(html) {
         if (!html) return null;
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = html;
         const img = tempDiv.querySelector('img');
-        return img ? img.src : null;
+        if (img && img.src && img.src.startsWith('http')) {
+            return img.src;
+        }
+        return null;
     }
 
     /**
      * Formata a data para o padrão brasileiro
-     * @param {string} dateStr - Data no formato RSS
-     * @returns {string} Data formatada
      */
     formatDate(dateStr) {
         try {
