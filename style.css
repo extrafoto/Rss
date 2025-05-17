@@ -141,3 +141,22 @@ body {
 .loading-overlay.hidden {
   display: none;
 }
+.share-buttons {
+  margin-top: 10px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.share-buttons .icon {
+  font-size: 1.2rem;
+  text-decoration: none;
+  color: white;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.share-buttons .icon:hover {
+  opacity: 1;
+}
+
