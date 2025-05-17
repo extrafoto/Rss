@@ -98,13 +98,14 @@ body {
 
 .navigation {
   position: absolute;
-  bottom: 20px;
+  bottom: 30px; /* Eleva um pouco mais para ficar bem visível */
   left: 0;
   right: 0;
   display: flex;
   justify-content: space-between;
-  padding: 0 15px;
-  z-index: 1000; /* sempre acima dos outros elementos */
+  padding: 0 25px;
+  z-index: 1000;
+  pointer-events: none; /* garante clique somente nos botões internos */
 }
 
 .control-button {
@@ -113,11 +114,11 @@ body {
   font-size: 2.5rem;
   user-select: none;
   transition: transform 0.2s;
+  pointer-events: auto; /* reativa eventos de clique apenas no botão */
 }
 
-
 .control-button:hover {
-  transform: scale(1.1);
+  transform: scale(1.2);
 }
 
 .logo {
