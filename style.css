@@ -1,35 +1,304 @@
+/* Estilos para o painel de notícias em formato 9:16 */
+:root {
+    --primary-color: #0066b3;
+    --secondary-color: #f8f8f8;
+    --text-color: #ffffff;
+    --background-color: #1e4c9a;
+    --progress-bar-color: #ffffff;
+    --progress-bar-bg: rgba(255, 255, 255, 0.3);
+    --button-color: #ffffff;
+    --button-bg: rgba(255, 255, 255, 0.2);
+    --button-hover-bg: rgba(255, 255, 255, 0.3);
+    --loading-overlay-bg: rgba(30, 76, 154, 0.9);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f0f0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.stories-container {
+    width: 100%;
+    height: 100%;
+    max-width: 414px; /* Largura típica de um smartphone */
+    max-height: 736px; /* Altura para proporção 9:16 */
+    position: relative;
+    overflow: hidden;
+    background-color: var(--background-color);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
 .progress-container {
-  position: absolute;
-  top: 10px;
-  left: 0;
-  right: 0;
-  display: flex;
-  gap: 4px;
-  padding: 0 10px;
-  z-index: 1000;
+    display: flex;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    z-index: 10;
+    gap: 4px;
 }
 
 .progress-bar {
-  flex: 1;
-  height: 4px;
-  background-color: rgba(255, 255, 255, 0.3);
-  overflow: hidden;
-  border-radius: 2px;
-  position: relative;
+    height: 3px;
+    background-color: var(--progress-bar-bg);
+    flex: 1;
+    border-radius: 3px;
+    overflow: hidden;
 }
 
-.progress-bar.animando::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  background: white;
-  animation: progresso 6s linear forwards;
+.progress-bar-fill {
+    height: 100%;
+    width: 0;
+    background-color: var(--progress-bar-color);
+    transition: width 0.3s linear;
 }
 
-@keyframes progresso {
-  from { width: 0%; }
-  to { width: 100%; }
+.stories-content {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    transition: transform 0.3s ease-out;
+}
+
+.story {
+    min-width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    color: var(--text-color);
+    background-color: var(--background-color);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Removido bloco de imagens conforme solicitado */
+
+.story-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 3;
+    padding: 0 15px;
+}
+
+.story-title {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    line-height: 1.3;
+}
+
+.story-date {
+    font-size: 14px;
+    opacity: 0.8;
+    margin-top: 10px;
+}
+
+.read-more-btn {
+    display: inline-block;
+    background-color: var(--button-bg);
+    color: var(--button-color);
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    margin-top: 30px;
+    transition: background-color 0.3s, transform 0.2s;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    z-index: 10;
+    cursor: pointer;
+}
+
+.read-more-btn:hover {
+    background-color: var(--button-hover-bg);
+    transform: scale(1.05);
+}
+
+.navigation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+.nav-left, .nav-right {
+    width: 50%;
+    height: 100%;
+    z-index: 5;
+    cursor: pointer;
+}
+
+.controls {
+    position: absolute;
+    bottom: 50%;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 10;
+}
+
+.control-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: var(--text-color);
+    transition: background-color 0.3s;
+}
+
+.control-button:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.logo {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+}
+
+.logo img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+/* Responsividade para garantir proporção 9:16 em diferentes dispositivos */
+@media (max-aspect-ratio: 9/16) {
+    .stories-container {
+        width: 100%;
+        height: 100vh;
+        max-width: none;
+        max-height: none;
+        border-radius: 0;
+    }
+}
+
+@media (min-aspect-ratio: 9/16) {
+    .stories-container {
+        width: calc(100vh * 9/16);
+        height: 100vh;
+        max-height: none;
+    }
+}
+
+/* Para telas muito pequenas */
+@media (max-width: 320px) {
+    .story-title {
+        font-size: 22px;
+    }
+}
+
+/* Animações */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.story {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Botão de atualização */
+.refresh-button {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: var(--text-color);
+    transition: background-color 0.3s;
+    z-index: 10;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.refresh-button:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Estilos para o overlay de carregamento */
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--loading-overlay-bg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    transition: opacity 0.5s ease-out;
+}
+
+.loading-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+    margin-bottom: 20px;
+}
+
+.loading-text {
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
