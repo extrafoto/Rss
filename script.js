@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
   let currentIndex = 0;
   let stories = [];
   let autoPlayTimer;
@@ -7,87 +7,85 @@ document.addEventListener('DOMContentLoaded', function() {
 
   const storiesContent = document.querySelector('.stories-content');
   const progressContainer = document.querySelector('.progress-container');
+  const loadingOverlay = document.querySelector('.loading-overlay');
   const prevButton = document.getElementById('prev-button');
   const nextButton = document.getElementById('next-button');
-  const loadingOverlay = document.querySelector('.loading-overlay');
 
   const rssParser = new RSSParser();
 
   async function loadStories() {
     try {
       loadingOverlay.classList.remove('hidden');
-      stories = await rssParser.parseURL('https://api.codetabs.com/v1/proxy?quest=https://oglobo.globo.com/rss/oglobo');
+      stories = await rssParser.fetchAndParseFeed();
       initializeStories();
-      loadingOverlay.classList.add('hidden');
+      setTimeout(() => loadingOverlay.classList.add('hidden'), 300);
     } catch (error) {
       console.error('Erro ao carregar as notícias:', error);
+      storiesContent.innerHTML = `<div class="story"><div class="story-title">Erro</div></div>`;
       loadingOverlay.classList.add('hidden');
     }
   }
 
   function initializeStories() {
-    progressContainer.innerHTML = '';
+    if (!stories.length) return;
+
     storiesContent.innerHTML = '';
+    progressContainer.innerHTML = '';
     progressBars = [];
 
-    stories.items.forEach((item, index) => {
-      const progressBar = document.createElement('div');
-      progressBar.className = 'progress-bar';
-      progressBar.innerHTML = '<div class="progress-bar-fill"></div>';
-      progressContainer.appendChild(progressBar);
-      progressBars.push(progressBar.querySelector('.progress-bar-fill'));
+    stories.forEach((_, index) => {
+      const bar = document.createElement('div');
+      bar.className = 'progress-bar';
+      bar.innerHTML = '<div class="progress-bar-fill"></div>';
+      progressContainer.appendChild(bar);
+      progressBars.push(bar.querySelector('.progress-bar-fill'));
+    });
 
-      const storyElement = document.createElement('div');
-      storyElement.className = 'story';
-      storyElement.innerHTML = \`
-        <div class="story-title">\${item.title}</div>
-        <div class="story-date">\${new Date(item.pubDate).toLocaleString()}</div>
-        <a href="\${item.link}" class="read-more-btn" target="_blank">Ler mais</a>
-        <div class="share-icons">
-          <a href="https://wa.me/?text=\${encodeURIComponent(item.link)}" target="_blank"><i class="fab fa-whatsapp"></i></a>
-          <a href="https://x.com/intent/tweet?url=\${encodeURIComponent(item.link)}" target="_blank"><i class="fab fa-twitter"></i></a>
-          <a href="https://bsky.app/?url=\${encodeURIComponent(item.link)}" target="_blank"><i class="fas fa-globe"></i></a>
-          <a href="https://www.facebook.com/sharer/sharer.php?u=\${encodeURIComponent(item.link)}" target="_blank"><i class="fab fa-facebook"></i></a>
+    stories.forEach(story => {
+      const el = document.createElement('div');
+      el.className = 'story';
+      el.innerHTML = `
+        <div class="story-content">
+          <div class="story-title">${story.titulo}</div>
+          <div class="story-date">${story.data}</div>
+          <a href="${story.link}" class="read-more-btn" target="_blank">Ler mais</a>
+          <div class="share-icons">
+            <a href="https://api.whatsapp.com/send?text=${encodeURIComponent(story.titulo + ' ' + story.link)}" target="_blank">🟢</a>
+            <a href="https://x.com/intent/tweet?text=${encodeURIComponent(story.titulo)}&url=${encodeURIComponent(story.link)}" target="_blank">❌</a>
+            <a href="https://bsky.app/profile?text=${encodeURIComponent(story.titulo)} ${encodeURIComponent(story.link)}" target="_blank">🔵</a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(story.link)}" target="_blank">📘</a>
+          </div>
         </div>
-      \`;
-      storiesContent.appendChild(storyElement);
+      `;
+      storiesContent.appendChild(el);
     });
 
     showStory(0);
   }
 
   function showStory(index) {
-    currentIndex = Math.max(0, Math.min(index, stories.items.length - 1));
-    storiesContent.style.transform = \`translateX(-\${currentIndex * 100}%)\`;
-    progressBars.forEach((bar, i) => {
-      bar.style.width = i < currentIndex ? '100%' : '0';
-    });
-    clearTimeout(autoPlayTimer);
-    startProgressBar(currentIndex);
-  }
+    if (index < 0) index = 0;
+    if (index >= stories.length) index = stories.length - 1;
+    currentIndex = index;
 
-  function startProgressBar(index) {
-    const fill = progressBars[index];
-    fill.style.width = '0';
-    fill.style.transition = \`width \${storyDuration}ms linear\`;
-    void fill.offsetWidth;
-    fill.style.width = '100%';
+    storiesContent.style.transform = `translateX(-${index * 100}%)`;
+    progressBars.forEach((fill, i) => {
+      fill.style.transition = 'none';
+      fill.style.width = i < index ? '100%' : '0%';
+    });
+
+    void progressBars[index].offsetWidth;
+    progressBars[index].style.transition = `width ${storyDuration}ms linear`;
+    progressBars[index].style.width = '100%';
+
+    clearTimeout(autoPlayTimer);
     autoPlayTimer = setTimeout(() => {
-      if (currentIndex < stories.items.length - 1) {
-        showStory(currentIndex + 1);
-      } else {
-        showStory(0);
-      }
+      showStory((index + 1) % stories.length);
     }, storyDuration);
   }
 
-  prevButton.addEventListener('click', () => {
-    showStory(currentIndex - 1);
-  });
-
-  nextButton.addEventListener('click', () => {
-    showStory(currentIndex + 1);
-  });
+  prevButton.addEventListener('click', () => showStory(currentIndex - 1));
+  nextButton.addEventListener('click', () => showStory(currentIndex + 1));
 
   loadStories();
 });
