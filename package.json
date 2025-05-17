@@ -1,6 +1,7 @@
 {
-  "name": "extrafoto",
+  "name": "rss-backend",
   "version": "1.0.0",
+  "main": "index.js",
   "dependencies": {
     "rss-parser": "^3.12.0"
   }
