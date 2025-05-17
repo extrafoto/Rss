@@ -126,6 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (index >= progressBars.length) return;
         
         const fill = progressBars[index];
+        if (!fill) return;
         fill.style.width = '0';
         fill.style.transition = `width ${storyDuration}ms linear`;
         
@@ -156,13 +157,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Navegação por toque na tela
-    navLeft.addEventListener('click', () => {
-        showStory(currentIndex - 1);
-    });
+    // navLeft.addEventListener('click', () => {
+//     showStory(currentIndex - 1);
+// });
 
-    navRight.addEventListener('click', () => {
-        showStory(currentIndex + 1);
-    });
+    // navRight.addEventListener('click', () => {
+//     showStory(currentIndex + 1);
+// });
 
     // Eventos de toque para arrastar
     document.addEventListener('touchstart', (e) => {
