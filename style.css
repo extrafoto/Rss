@@ -302,3 +302,19 @@ body {
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
+.stories-content {
+  display: flex;
+  transition: transform 0.3s ease-in-out;
+  width: 100%;
+  overflow: hidden;
+}
+
+.story {
+  flex: 0 0 100%;
+  pointer-events: none; /* impede clique em slides inativos */
+}
+
+.story.active {
+  pointer-events: auto; /* permite clique somente no slide atual */
+}
+
