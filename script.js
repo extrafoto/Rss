@@ -26,8 +26,9 @@ const editoriaCores = {
     economia: '#2B7A2B',
     saude: '#3B9DA1',
     mundo: '#2E5ACB',
-    ela: '#9C27B0', 
-    cultura: '#803A45'
+    ela: '#9C27B0',
+    cultura: '#803A45',
+    rioshow: '#D97706'
 };
 
     function obterCorPorLink(link) {
