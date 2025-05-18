@@ -20,13 +20,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const rssParser = new RSSParser();
 
     // Mapeamento de editorias para cores
- const editoriaCores = {
+const editoriaCores = {
     esporte: '#3DBE3D',
     blogs: '#2C3E80',
     economia: '#2B7A2B',
     saude: '#3B9DA1',
     mundo: '#2E5ACB',
-    ela: #9c27b0',
+    ela: '#9C27B0', 
     cultura: '#803A45'
 };
 
