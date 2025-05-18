@@ -1,38 +1,34 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Variáveis globais
     let currentIndex = 0;
     let stories = [];
     let autoPlayTimer;
-    let storyDuration = 7000; // 7 segundos por notícia
+    let storyDuration = 7000;
     let touchStartX = 0;
     let touchEndX = 0;
     let progressBars = [];
     let isTransitioning = false;
 
-    // Elementos DOM corrigidos
     const progressContainer = document.querySelector('.progress-container');
     const storiesContent = document.querySelector('.stories-content');
     const loadingOverlay = document.querySelector('.loading-overlay');
     const prevButton = document.getElementById('prev-button');
     const nextButton = document.getElementById('next-button');
 
-    // Inicializar o parser RSS
     const rssParser = new RSSParser();
 
-    // Mapeamento de editorias para cores
-const editoriaCores = {
-    esporte: '#3DBE3D',
-    blogs: '#2C3E80',
-    economia: '#2B7A2B',
-    saude: '#3B9DA1',
-    mundo: '#2E5ACB',
-    ela: '#9C27B0',
-    cultura: '#803A45',
-    rioshow: '#D97706',
-    viagem: '#0E918C',
-    'um-so-planeta': '#5A9A3D', // <- CORRETO!
-    kogut: '#741B47'
-};
+    const editoriaCores = {
+        esporte: '#3DBE3D',
+        blogs: '#2C3E80',
+        economia: '#2B7A2B',
+        saude: '#3B9DA1',
+        mundo: '#2E5ACB',
+        ela: '#9C27B0',
+        cultura: '#803A45',
+        rioshow: '#D97706',
+        viagem: '#0E918C',
+        'um-so-planeta': '#5A9A3D',
+        kogut: '#741B47'
+    };
 
     function obterCorPorLink(link) {
         try {
@@ -43,7 +39,7 @@ const editoriaCores = {
         } catch (e) {
             console.warn('Link inválido:', link);
         }
-        return '#0B3861'; // cor padrão
+        return '#0B3861';
     }
 
     prevButton.addEventListener('click', () => {
@@ -98,6 +94,20 @@ const editoriaCores = {
                     <div class="story-title">${story.titulo}</div>
                     <div class="story-date">${story.data}</div>
                     <a href="${story.link}" class="read-more-btn" target="_blank" rel="noopener noreferrer">Ler mais</a>
+                    <div class="share-buttons">
+                        <a href="https://api.whatsapp.com/send?text=${encodeURIComponent(story.titulo + ' ' + story.link)}" target="_blank" rel="noopener noreferrer" title="WhatsApp">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(story.link)}" target="_blank" rel="noopener noreferrer" title="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://twitter.com/intent/tweet?url=${encodeURIComponent(story.link)}&text=${encodeURIComponent(story.titulo)}" target="_blank" rel="noopener noreferrer" title="X (Twitter)">
+                            <i class="fab fa-x-twitter"></i>
+                        </a>
+                        <a href="https://bsky.app/profile?text=${encodeURIComponent(story.titulo + ' ' + story.link)}" target="_blank" rel="noopener noreferrer" title="Bluesky">
+                            <i class="fas fa-cloud"></i>
+                        </a>
+                    </div>
                 </div>`;
             storiesContent.appendChild(storyElement);
         });
