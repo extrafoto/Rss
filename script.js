@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
     economia: '#2B7A2B',
     saude: '#3B9DA1',
     mundo: '#2E5ACB',
+    ela: #9c27b0',
     cultura: '#803A45'
 };
 
