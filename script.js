@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Variáveis globais
     let currentIndex = 0;
     let stories = [];
@@ -19,6 +19,28 @@ document.addEventListener('DOMContentLoaded', function() {
     // Inicializar o parser RSS
     const rssParser = new RSSParser();
 
+    // Mapeamento de editorias para cores
+    const editoriaCores = {
+        esporte: '#02ed02',
+        blogs: '#000080',
+        economia: '#00a000',
+        saude: '#00858a',
+        mundo: '#0000FF',
+        cultura: '#5e2129'
+    };
+
+    function obterCorPorLink(link) {
+        try {
+            const path = new URL(link).pathname.toLowerCase();
+            for (const chave in editoriaCores) {
+                if (path.includes(chave)) return editoriaCores[chave];
+            }
+        } catch (e) {
+            console.warn('Link inválido:', link);
+        }
+        return '#0B3861'; // cor padrão
+    }
+
     prevButton.addEventListener('click', () => {
         showStory(currentIndex - 1);
     });
@@ -27,7 +49,6 @@ document.addEventListener('DOMContentLoaded', function() {
         showStory(currentIndex + 1);
     });
 
-    // Carregar as notícias diretamente do feed RSS
     async function loadStories() {
         try {
             loadingOverlay.classList.remove('hidden');
@@ -45,7 +66,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Inicializar as histórias corretamente
     function initializeStories() {
         if (!stories.length) return;
 
@@ -64,6 +84,10 @@ document.addEventListener('DOMContentLoaded', function() {
         stories.forEach(story => {
             const storyElement = document.createElement('div');
             storyElement.className = 'story';
+
+            const corFundo = obterCorPorLink(story.link);
+            storyElement.style.backgroundColor = corFundo;
+
             storyElement.innerHTML = `
                 <div class="story-content">
                     <div class="story-title">${story.titulo}</div>
@@ -109,7 +133,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }, storyDuration);
     }
 
-    // Eventos touch
     document.addEventListener('touchstart', e => {
         touchStartX = e.changedTouches[0].screenX;
         clearTimeout(autoPlayTimer);
@@ -131,7 +154,6 @@ document.addEventListener('DOMContentLoaded', function() {
         else startProgressBar(currentIndex);
     });
 
-    // Botão atualizar
     function addRefreshButton() {
         const refreshButton = document.createElement('div');
         refreshButton.className = 'refresh-button';
