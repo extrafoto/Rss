@@ -154,13 +154,13 @@ body {
   display: flex;
   justify-content: center;
   gap: 16px;
-  margin-top: 30px;
+  margin-top: 20px;
   opacity: 0.5;
 }
 
 .share-buttons a {
   color: white;
-  font-size: 3.2rem;
+  font-size: 2.2rem;
   transition: opacity 0.3s, transform 0.2s;
 }
 
