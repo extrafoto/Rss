@@ -28,7 +28,10 @@ const editoriaCores = {
     mundo: '#2E5ACB',
     ela: '#9C27B0',
     cultura: '#803A45',
-    rioshow: '#D97706'
+    rioshow: '#D97706',
+    viagem: '#0E918C',
+    'um-so-planeta': '#5A9A3D', // <- CORRETO!
+    kogut: '#741B47'
 };
 
     function obterCorPorLink(link) {
