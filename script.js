@@ -95,19 +95,19 @@ document.addEventListener('DOMContentLoaded', function () {
                     <div class="story-date">${story.data}</div>
                     <a href="${story.link}" class="read-more-btn" target="_blank" rel="noopener noreferrer">Ler mais</a>
                     <div class="share-buttons">
-                        <a href="https://api.whatsapp.com/send?text=${encodeURIComponent(story.titulo + ' ' + story.link)}" target="_blank" rel="noopener noreferrer" title="WhatsApp">
-                            <i class="fab fa-whatsapp"></i>
-                        </a>
-                        <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(story.link)}" target="_blank" rel="noopener noreferrer" title="Facebook">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="https://twitter.com/intent/tweet?url=${encodeURIComponent(story.link)}&text=${encodeURIComponent(story.titulo)}" target="_blank" rel="noopener noreferrer" title="X (Twitter)">
-                            <i class="fab fa-x-twitter"></i>
-                        </a>
-                        <a href="https://bsky.app/profile?text=${encodeURIComponent(story.titulo + ' ' + story.link)}" target="_blank" rel="noopener noreferrer" title="Bluesky">
-                            <i class="fas fa-cloud"></i>
-                        </a>
-                    </div>
+  <a href="https://api.whatsapp.com/send?text=${encodeURIComponent(story.titulo + ' ' + story.link)}" target="_blank" title="WhatsApp">
+    <svg height="20" fill="white" opacity="0.5" viewBox="0 0 448 512"><path d="M380.9 97.1C339..."/></svg>
+  </a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(story.link)}" target="_blank" title="Facebook">
+    <svg height="20" fill="white" opacity="0.5" viewBox="0 0 320 512"><path d="M279.1 288l14..."/></svg>
+  </a>
+  <a href="https://twitter.com/intent/tweet?url=${encodeURIComponent(story.link)}&text=${encodeURIComponent(story.titulo)}" target="_blank" title="X">
+    <svg height="20" fill="white" opacity="0.5" viewBox="0 0 512 512"><path d="M461.2 64H51.8C2..."/></svg>
+  </a>
+  <a href="https://bsky.app/" target="_blank" title="Bluesky">
+    <svg height="20" fill="white" opacity="0.5" viewBox="0 0 48 48"><path d="M..."/></svg>
+  </a>
+</div>
                 </div>`;
             storiesContent.appendChild(storyElement);
         });
