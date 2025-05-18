@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
     saude: '#3B9DA1',
     mundo: '#2E5ACB',
     cultura: '#803A45'
+    ela: #9c27b0'
 };
 
     function obterCorPorLink(link) {
