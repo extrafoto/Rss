@@ -90,25 +90,28 @@ document.addEventListener('DOMContentLoaded', function () {
             storyElement.style.backgroundColor = corFundo;
 
             storyElement.innerHTML = `
-                <div class="story-content">
-                    <div class="story-title">${story.titulo}</div>
-                    <div class="story-date">${story.data}</div>
-                    <a href="${story.link}" class="read-more-btn" target="_blank" rel="noopener noreferrer">Ler mais</a>
-                    <div class="share-buttons">
-                        <a href="https://api.whatsapp.com/send?text=${encodeURIComponent(story.titulo + ' ' + story.link)}" target="_blank" title="WhatsApp">
-                            <i class="fab fa-whatsapp" style="color:white; opacity:0.5; font-size: 20px;"></i>
-                        </a>
-                        <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(story.link)}" target="_blank" title="Facebook">
-                            <i class="fab fa-facebook" style="color:white; opacity:0.5; font-size: 20px;"></i>
-                        </a>
-                        <a href="https://twitter.com/intent/tweet?url=${encodeURIComponent(story.link)}&text=${encodeURIComponent(story.titulo)}" target="_blank" title="X">
-                            <i class="fab fa-x-twitter" style="color:white; opacity:0.5; font-size: 20px;"></i>
-                        </a>
-                        <a href="https://bsky.app/" target="_blank" title="Bluesky">
-                            <i class="fas fa-cloud" style="color:white; opacity:0.5; font-size: 20px;"></i>
-                        </a>
-                    </div>
-                </div>`;
+  <div class="story-content">
+    <div class="story-title">${story.titulo}</div>
+    <div class="story-date">${story.data}</div>
+    <a href="${story.link}" class="read-more-btn" target="_blank" rel="noopener noreferrer">Ler mais</a>
+    <div class="share-buttons">
+      <a href="https://api.whatsapp.com/send?text=${encodeURIComponent(story.titulo + ' ' + story.link)}" target="_blank" title="WhatsApp">
+        <i class="fab fa-whatsapp" style="opacity: 0.5; color: white;"></i>
+      </a>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(story.link)}" target="_blank" title="Facebook">
+        <i class="fab fa-facebook" style="opacity: 0.5; color: white;"></i>
+      </a>
+      <a href="https://twitter.com/intent/tweet?url=${encodeURIComponent(story.link)}&text=${encodeURIComponent(story.titulo)}" target="_blank" title="X (Twitter)">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" height="20" fill="white" opacity="0.5" style="vertical-align: middle;">
+          <path d="M476.2 32H377.4L256 183.7 134.6 32H35.8L204.9 256 35.8 480h98.8L256 328.3 377.4 480h98.8L307.1 256 476.2 32z"/>
+        </svg>
+      </a>
+      <a href="https://bsky.app/" target="_blank" title="Bluesky">
+        <i class="fas fa-cloud" style="opacity: 0.5; color: white;"></i>
+      </a>
+    </div>
+  </div>`;
+
             storiesContent.appendChild(storyElement);
         });
 
