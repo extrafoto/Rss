@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'OGloboTitleFont';
+  src: local("WhitmanDisplay-ExtraBold"),
+       url("https://s.glbimg.com/es/sde/fonts/whitman/WhitmanDisplay-ExtraBold.woff2") format("woff2"),
+       url("https://s.glbimg.com/es/sde/fonts/whitman/WhitmanDisplay-ExtraBold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+}
 
 body {
   margin: 0;
