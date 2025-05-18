@@ -20,14 +20,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const rssParser = new RSSParser();
 
     // Mapeamento de editorias para cores
-    const editoriaCores = {
-        esporte: '#02ed02',
-        blogs: '#000080',
-        economia: '#00a000',
-        saude: '#00858a',
-        mundo: '#0000FF',
-        cultura: '#5e2129'
-    };
+ const editoriaCores = {
+    esporte: '#3DBE3D',
+    blogs: '#2C3E80',
+    economia: '#2B7A2B',
+    saude: '#3B9DA1',
+    mundo: '#2E5ACB',
+    cultura: '#803A45'
+};
 
     function obterCorPorLink(link) {
         try {
