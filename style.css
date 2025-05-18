@@ -1,4 +1,4 @@
-
+/* Reset e fundo com degradê */
 body {
   margin: 0;
   padding: 0;
@@ -8,14 +8,18 @@ body {
   overflow: hidden;
 }
 
+/* Container principal */
 .container {
   height: 100vh;
   width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
+/* Painel do stories */
 .stories-container {
   position: relative;
   width: 100%;
@@ -23,8 +27,11 @@ body {
   height: 100vh;
   background: #003366;
   overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
 }
 
+/* Progresso de cada slide */
 .progress-container {
   display: flex;
   gap: 4px;
@@ -49,6 +56,7 @@ body {
   width: 0;
 }
 
+/* Container com todas as stories */
 .stories-content {
   display: flex;
   transition: transform 0.3s ease-in-out;
@@ -56,6 +64,7 @@ body {
   height: 100%;
 }
 
+/* Story individual */
 .story {
   flex: 0 0 100%;
   padding: 20px;
@@ -64,27 +73,29 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center; /* já está correto no seu código atual */
-  text-align: center;  /* garante centralização total dos textos */
+  align-items: center;
+  text-align: center;
 }
 
 .story.active {
   pointer-events: auto;
 }
 
+/* Título da notícia */
 .story-title {
-  font-size: 1.5rem;
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
   font-weight: bold;
   margin-bottom: 10px;
-  text-align: center;
 }
 
+/* Data da notícia */
 .story-date {
   font-size: 0.9rem;
   margin-bottom: 20px;
   opacity: 0.8;
 }
 
+/* Botão "Ler mais" */
 .read-more-btn {
   display: inline-block;
   padding: 10px 20px;
@@ -97,16 +108,17 @@ body {
   margin-top: 20px;
 }
 
+/* Área dos botões de navegação */
 .navigation {
   position: absolute;
-  bottom: 80px; /* Eleva um pouco mais para ficar bem visível */
+  bottom: 70px;
   left: 0;
   right: 0;
   display: flex;
   justify-content: space-between;
   padding: 0 25px;
   z-index: 1000;
-  pointer-events: none; /* garante clique somente nos botões internos */
+  pointer-events: none;
 }
 
 .control-button {
@@ -115,24 +127,27 @@ body {
   font-size: 2.5rem;
   user-select: none;
   transition: transform 0.2s;
-  pointer-events: auto; /* reativa eventos de clique apenas no botão */
+  pointer-events: auto;
 }
 
 .control-button:hover {
   transform: scale(1.2);
 }
 
+/* Logo centralizado no topo */
 .logo {
   position: absolute;
-  top: 10px;
+  top: 15px;
   left: 50%;
   transform: translateX(-50%);
+  max-width: 120px;
 }
 
+/* Overlay de carregamento */
 .loading-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -141,4 +156,20 @@ body {
 
 .loading-overlay.hidden {
   display: none;
+}
+
+/* Responsividade para tablets/desktops */
+@media (min-width: 768px) {
+  .stories-container {
+    height: 90vh;
+    border-radius: 20px;
+  }
+
+  .read-more-btn {
+    font-size: 1rem;
+  }
+
+  .control-button {
+    font-size: 2.8rem;
+  }
 }
