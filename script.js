@@ -106,11 +106,9 @@ document.addEventListener('DOMContentLoaded', function () {
           <path d="M476.2 32H377.4L256 183.7 134.6 32H35.8L204.9 256 35.8 480h98.8L256 328.3 377.4 480h98.8L307.1 256 476.2 32z"/>
         </svg>
       </a>
-     <a href="https://bsky.app/" target="_blank" title="Bluesky">
-  <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" fill="white" opacity="0.5">
-    <path d="M12 2c.94 0 1.82.38 2.47 1.02L18.29 7H21c.55 0 1 .45 1 1v1.5c0 .55-.45 1-1 1h-3l-2.67 3.98a3.45 3.45 0 01-2.95 1.52c-1.36 0-2.65-.74-3.31-1.93L6 10.5H3c-.55 0-1-.45-1-1V8c0-.55.45-1 1-1h2.71L9.53 3.02C10.18 2.38 11.06 2 12 2zm0 2c-.28 0-.55.11-.74.31L7.47 8H4v.5l3.17 4.73A1.5 1.5 0 009.5 14c.52 0 1.01-.26 1.3-.7L12 10.75l1.2 2.55c.29.44.78.7 1.3.7.53 0 1.02-.26 1.33-.7L20 8.5V8h-3.47l-3.79-3.69A1.01 1.01 0 0012 4z"/>
-  </svg>
-</a>
+      <a href="https://bsky.app/" target="_blank" title="Bluesky">
+        <i class="fas fa-cloud" style="opacity: 0.5; color: white;"></i>
+      </a>
     </div>
   </div>`;
 
